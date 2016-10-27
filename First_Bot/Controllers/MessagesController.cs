@@ -34,12 +34,11 @@ namespace First_Bot
 
                         await SetConversationData(incomingMessage, "keywords", keywords);
 
-                        reply = incomingMessage.CreateReply("Is your location Leeds?");
-                        await SetConversationData(incomingMessage, "location", "leeds");
+                        reply = incomingMessage.CreateReply("What is your location?");
                     }
-                    else if (incomingMessage.Text.ToLowerInvariant().Contains("no it's"))
+                    else if (incomingMessage.Text.ToLowerInvariant().Contains("my location is"))
                     {
-                        var location = incomingMessage.Text.ToLowerInvariant().Replace("no it's", "");
+                        var location = incomingMessage.Text.ToLowerInvariant().Replace("my location is", "");
 
                         await SetConversationData(incomingMessage, "location", location);
 
