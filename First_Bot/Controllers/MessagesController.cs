@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using First_Bot.Controllers.API;
 using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
 
@@ -20,12 +21,16 @@ namespace First_Bot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity incomingMessage)
         {
+            SearchResultsWrapper data = Search.GetJobs(incomingMessage.Text);
+            Console.WriteLine(data);
+
             try
             {
                 Activity reply;
 
                 if (incomingMessage.Type == ActivityTypes.Message)
                 {
+
 //                    Bot: Welcome did you know (intro)
                     //Bot: Hi how can i help you
                     //Alex: I’m looking for < junior UX jobs >
@@ -57,7 +62,6 @@ namespace First_Bot
                     {
                         reply = incomingMessage.CreateReply("Hi, how can I help you?");
                     }
-
                 }
                 else
                 {
