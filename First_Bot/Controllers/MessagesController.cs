@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using First_Bot.Controllers.API;
 using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
 
@@ -20,7 +21,9 @@ namespace First_Bot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity incomingMessage)
         {
-            Controllers.API.Search.GetJobs(incomingMessage.Text);
+            SearchResultsWrapper data = Search.GetJobs(incomingMessage.Text);
+            Console.WriteLine(data);
+
             try
             {
                 Activity reply;

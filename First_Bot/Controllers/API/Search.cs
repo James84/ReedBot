@@ -13,17 +13,12 @@ namespace First_Bot.Controllers.API
 {
     public class Search
     {
-        //public class Jobs
-        //{
-        //    public int TotalResults { get; set; }
-        //}
-
-        public static void GetJobs(string keywords)
+        public static SearchResultsWrapper GetJobs(string keywords)
         {
-            GetJobs(keywords, null);
+            return GetJobs(keywords, null);
         }
 
-        public static void GetJobs(string keywords, string location)
+        public static SearchResultsWrapper GetJobs(string keywords, string location)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri("http://www.reed.co.uk/api/1.0/");
@@ -37,17 +32,17 @@ namespace First_Bot.Controllers.API
             Task<HttpResponseMessage> response = client.GetAsync("search?keywords=" + keywords + "&location=" + location);
             HttpResponseMessage result = response.Result;
 
-            //jobs = null;
+            SearchResultsWrapper jobs = null;
 
             if (result.IsSuccessStatusCode)
             {
                 var data = result.Content.ReadAsStringAsync();
                 Console.WriteLine(data);
-                var jsonData = data.Result;
-                Console.WriteLine(jsonData);
-
-                //jobs.TotalResults = jsonData;
+                jobs = JsonConvert.DeserializeObject<SearchResultsWrapper>(data.Result);
+                Console.WriteLine(jobs);
             }
+
+            return jobs;
         }
     }
 }
