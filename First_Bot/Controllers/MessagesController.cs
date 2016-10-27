@@ -26,30 +26,38 @@ namespace First_Bot
 
                 if (incomingMessage.Type == ActivityTypes.Message)
                 {
-                    if (incomingMessage.Text.ToLowerInvariant() == "hello" || incomingMessage.Text.ToLowerInvariant() == "hi")
+//                    Bot: Welcome did you know (intro)
+                    //Bot: Hi how can i help you
+                    //Alex: I’m looking for < junior UX jobs >
+                    //Bot: Current Location ? Leeds ? (show map)
+//                    Alex: No, < London >
+//                    Bot: Show results
+
+                    if (incomingMessage.Text.ToLowerInvariant().Contains("i'm looking for"))
                     {
+                        var keywords = incomingMessage.Text.ToLowerInvariant().Replace("i'm looking for ", "").Replace("jobs", "").Trim();
 
-                        reply =
-                            incomingMessage.CreateReply(
-                                $"<b>Hello {incomingMessage.From.Name}</b>, this is ReedBot. How can I help?");
+                        await SetConversationData(incomingMessage, "keywords", keywords);
 
-                        reply.TextFormat = "xml";
+                        reply = incomingMessage.CreateReply("What location would you like to search in?");
                     }
-                    else if (incomingMessage.Text.ToLowerInvariant() == "search")
+                    else if (incomingMessage.Text.ToLowerInvariant().Contains("my location is"))
                     {
+                        var location = incomingMessage.Text.ToLowerInvariant().Replace("my location is", "");
 
-                        reply =
-                            incomingMessage.CreateReply();
-                        
-                        reply.Attachments = new List<Attachment>
-                        {
-                            CreateAttachment("http://www.reed.co.uk/jobs", "reed.co.uk", "http://www.reed.co.uk/resources/images/campaign-2015/header-logo.png")
-                        };
+                        await SetConversationData(incomingMessage, "location", location);
+
+                        var conversationData = await GetConversationData(incomingMessage);
+
+                        var keywords = conversationData.GetProperty<string>("keywords");
+
+                        reply = incomingMessage.CreateReply($"Your keywords are {keywords} and your location is {location}");
                     }
                     else
                     {
-                        reply = incomingMessage.CreateReply("I'm sorry ReedBot does not understand. Please try again");
+                        reply = incomingMessage.CreateReply("Hi, how can I help you?");
                     }
+
                 }
                 else
                 {
@@ -68,8 +76,41 @@ namespace First_Bot
             }
             catch (Exception ex)
             {
+                var reply = incomingMessage.CreateReply($"I'm sorry there has been an error. {ex.Message}");
+
+                if (reply != null)
+                {
+                    var connector = new ConnectorClient(new Uri(incomingMessage.ServiceUrl));
+
+                    await connector.Conversations.ReplyToActivityAsync(reply);
+                }
+
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                return response;
                 throw;
             }
+        }
+
+        private static async Task<BotData> GetConversationData(Activity incomingMessage)
+        {
+            var stateClient = incomingMessage.GetStateClient();
+
+            return await stateClient
+                .BotState
+                .GetConversationDataAsync(incomingMessage.ChannelId, incomingMessage.From.Id);
+        }
+
+        private static async Task SetConversationData(Activity incomingMessage, string key, string value)
+        {
+            var stateClient = incomingMessage.GetStateClient();
+
+            var conversationData = await GetConversationData(incomingMessage);
+
+            conversationData.SetProperty(key, value);
+
+            stateClient.BotState.SetConversationData(incomingMessage.ChannelId,
+                incomingMessage.From.Id,
+                conversationData);
         }
 
         private static Attachment CreateAttachment(string buttonLink = "", string buttonTitle = "", string imageUrl = "")
@@ -106,11 +147,7 @@ namespace First_Bot
             }
             else if (message.Type == ActivityTypes.ConversationUpdate)
             {
-                var reply = message.CreateReply("Hello welcome to reed.co.uk. How can we help?");
-                reply.Attachments = new List<Attachment>
-                {
-                    CreateAttachment(buttonLink: "http://www.reed.co.uk/jobs", buttonTitle: "Search", imageUrl: "")
-                };
+                var reply = message.CreateReply("Welcome to job bot, how can I help?");
 
                 return reply;
             }
@@ -131,3 +168,31 @@ namespace First_Bot
         }
     } 
 }
+
+/*
+ 
+                    if (incomingMessage.Text.ToLowerInvariant() == "hello" || incomingMessage.Text.ToLowerInvariant() == "hi")
+                    {
+
+                        reply =
+                            incomingMessage.CreateReply(
+                                $"<b>Hello {incomingMessage.From.Name}</b>, this is ReedBot. How can I help?");
+
+                        reply.TextFormat = "xml";
+                    }
+                    else if (incomingMessage.Text.ToLowerInvariant() == "search")
+                    {
+
+                        reply =
+                            incomingMessage.CreateReply("Let's search!");
+                        
+                        reply.Attachments = new List<Attachment>
+                        {
+                            CreateAttachment("http://www.reed.co.uk/jobs", "reed.co.uk", "http://www.reed.co.uk/resources/images/campaign-2015/header-logo.png")
+                        };
+                    }
+                    else
+                    {
+                        reply = incomingMessage.CreateReply("I'm sorry ReedBot does not understand. Please try again");
+                    }     
+*/
