@@ -42,7 +42,6 @@ namespace First_Bot
 
                         reply = incomingMessage.CreateReply("Is your location Leeds?");
                         await SetConversationData(incomingMessage, "location", "leeds");
-
                     }
                     else if (incomingMessage.Text.ToLowerInvariant().Contains("no it's"))
                     {
@@ -104,7 +103,6 @@ namespace First_Bot
 
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
-                throw;
             }
         }
 
