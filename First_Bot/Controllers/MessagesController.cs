@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -17,33 +18,86 @@ namespace First_Bot
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
         /// </summary>
-        public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
+        public async Task<HttpResponseMessage> Post([FromBody]Activity incomingMessage)
         {
-            Activity reply;
-
-            if (activity.Type == ActivityTypes.Message)
+            try
             {
-                // calculate something for us to return
-                //var length = (activity.Text ?? string.Empty).Length;
+                Activity reply;
 
-                // return our reply to the user
-                //reply = activity.CreateReply($"You sent {activity.Text} which was {length} characters");
-                reply = activity.CreateReply("Hello, this is ReedBot. How can I help?");
+                if (incomingMessage.Type == ActivityTypes.Message)
+                {
+                    if (incomingMessage.Text.ToLowerInvariant() == "hello" || incomingMessage.Text.ToLowerInvariant() == "hi")
+                    {
+
+                        reply =
+                            incomingMessage.CreateReply(
+                                $"<b>Hello {incomingMessage.From.Name}</b>, this is ReedBot. How can I help?");
+
+                        reply.TextFormat = "xml";
+                    }
+                    else if (incomingMessage.Text.ToLowerInvariant() == "search")
+                    {
+
+                        reply =
+                            incomingMessage.CreateReply();
+                        
+                        reply.Attachments = new List<Attachment>
+                        {
+                            CreateAttachment("http://www.reed.co.uk/jobs", "http://www.reed.co.uk/resources/images/campaign-2015/header-logo.png")
+                        };
+                    }
+                    else
+                    {
+                        reply = incomingMessage.CreateReply("I'm sorry ReedBot does not understand. Please try again");
+                    }
+                }
+                else
+                {
+                    reply = HandleSystemMessage(incomingMessage);
+                }
+
+                if (reply != null)
+                {
+                    var connector = new ConnectorClient(new Uri(incomingMessage.ServiceUrl));
+
+                    await connector.Conversations.ReplyToActivityAsync(reply);
+                }
+
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                return response;
             }
-            else
+            catch (Exception ex)
             {
-                reply = HandleSystemMessage(activity);
+                throw;
             }
+        }
 
-            if (reply != null)
+        private static Attachment CreateAttachment(string contentUrl, string imageUrl)
+        {
+            var cardButtons = new List<CardAction>();
+
+            var cardImages = new List<CardImage> {new CardImage(imageUrl)};
+
+            var plButton = new CardAction
             {
-                var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+                Value = contentUrl,
+                Type = "openUrl",
+                Title = "reed.co.uk"
+            };
 
-                await connector.Conversations.ReplyToActivityAsync(reply);
-            }
-            
-            var response = Request.CreateResponse(HttpStatusCode.OK);
-            return response;
+            cardButtons.Add(plButton);
+
+            var plCard = new HeroCard()
+            {
+                //Title = $"Click on the button to run a search",
+                Subtitle = "Click on the button to run a search",
+                Images = cardImages,
+                Buttons = cardButtons
+            };
+
+            var plAttachment = plCard.ToAttachment();
+
+            return plAttachment;
         }
 
         private Activity HandleSystemMessage(Activity message)
