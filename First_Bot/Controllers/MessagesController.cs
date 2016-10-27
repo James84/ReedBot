@@ -20,12 +20,14 @@ namespace First_Bot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity incomingMessage)
         {
+            Controllers.API.Search.GetJobs(incomingMessage.Text);
             try
             {
                 Activity reply;
 
                 if (incomingMessage.Type == ActivityTypes.Message)
                 {
+
                     if (incomingMessage.Text.ToLowerInvariant() == "hello" || incomingMessage.Text.ToLowerInvariant() == "hi")
                     {
 
