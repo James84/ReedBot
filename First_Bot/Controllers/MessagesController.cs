@@ -21,9 +21,6 @@ namespace First_Bot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity incomingMessage)
         {
-            SearchResultsWrapper data = Search.GetJobs(incomingMessage.Text);
-            Console.WriteLine(data);
-
             try
             {
                 Activity reply;
@@ -53,7 +50,10 @@ namespace First_Bot
                     }
                     else
                     {
-                        reply = incomingMessage.CreateReply("I'm sorry ReedBot does not understand. Please try again");
+                        SearchResultsWrapper data = Search.GetJobs(incomingMessage.Text);
+                        Console.WriteLine(data);
+                        reply = incomingMessage.CreateReply($"I found {data.TotalResults} for {incomingMessage.Text}. Click {data.SearchUrl} for details.");
+                        //reply = incomingMessage.CreateReply("I'm sorry ReedBot does not understand. Please try again");
                     }
                 }
                 else
