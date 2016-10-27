@@ -42,6 +42,9 @@ namespace First_Bot.Controllers.API
                 Console.WriteLine(jobs);
             }
 
+            var sanitizedKeywords = keywords.Replace(" ", "+");
+            jobs.SearchUrl = "http://www.reed.co.uk/jobs?keywords="+ sanitizedKeywords + "&location=" + location;
+
             return jobs;
         }
     }
