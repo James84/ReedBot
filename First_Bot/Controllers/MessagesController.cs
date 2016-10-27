@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
 using First_Bot.Controllers.API;
 using Microsoft.Bot.Connector;
-using Newtonsoft.Json;
 
 namespace First_Bot
 {
@@ -30,8 +27,7 @@ namespace First_Bot
 
                 if (incomingMessage.Type == ActivityTypes.Message)
                 {
-
-//                    Bot: Welcome did you know (intro)
+                    //                    Bot: Welcome did you know (intro)
                     //Bot: Hi how can i help you
                     //Alex: I’m looking for < junior UX jobs >
                     //Bot: Current Location ? Leeds ? (show map)
@@ -60,21 +56,17 @@ namespace First_Bot
                         {
                             var searchData = Search.GetJobs(keywords, location);
 
-                            reply =
-                                incomingMessage.CreateReply(
-                                    $"We have {searchData.TotalResults} jobs for {keywords} jobs in {location}.");
+                            reply = incomingMessage.CreateReply();
 
                             reply.Attachments = new List<Attachment>
                             {
-                                CreateAttachment($"http://www.reed.co.uk/jobs?keywords={keywords}&location={location}", "run search", "")
+                                CreateAttachment($"http://www.reed.co.uk/jobs?keywords={keywords}&location={location}", 
+                                                 "see my jobs", subTitle: $"We have {searchData.TotalResults} jobs for {keywords} jobs in {location}.")
                             };
-
                         }
                         else
                         {
-                            reply =
-                                incomingMessage.CreateReply(
-                                    $"Either keywords or location are empty. Please try again.");
+                            reply = incomingMessage.CreateReply("Either keywords or location are empty. Please try again.");
                         }
                     }
                     else
@@ -136,9 +128,12 @@ namespace First_Bot
                 conversationData);
         }
 
-        private static Attachment CreateAttachment(string buttonLink = "", string buttonTitle = "", string imageUrl = "")
+        private static Attachment CreateAttachment(string buttonLink = "", string buttonTitle = "", string imageUrl = "", string subTitle = "")
         {
             var plCard = new HeroCard();
+
+            if (!string.IsNullOrEmpty(subTitle))
+                plCard.Subtitle = subTitle;
 
             if (!string.IsNullOrEmpty(imageUrl))
             {
