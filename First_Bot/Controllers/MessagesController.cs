@@ -24,10 +24,11 @@ namespace First_Bot
             if (activity.Type == ActivityTypes.Message)
             {
                 // calculate something for us to return
-                int length = (activity.Text ?? string.Empty).Length;
+                //var length = (activity.Text ?? string.Empty).Length;
 
                 // return our reply to the user
-                reply = activity.CreateReply($"You sent {activity.Text} which was {length} characters");
+                //reply = activity.CreateReply($"You sent {activity.Text} which was {length} characters");
+                reply = activity.CreateReply("Hello, this is ReedBot. How can I help?");
             }
             else
             {
@@ -36,7 +37,7 @@ namespace First_Bot
 
             if (reply != null)
             {
-                ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+                var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
 
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }

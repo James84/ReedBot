@@ -37,3 +37,42 @@ C:\Users\James\Documents\Programming\Bots\First_Bot\First_Bot\bin\zh-hans\Micros
 C:\Users\James\Documents\Programming\Bots\First_Bot\First_Bot\obj\Debug\First_Bot.csprojResolveAssemblyReference.cache
 C:\Users\James\Documents\Programming\Bots\First_Bot\First_Bot\obj\Debug\Bot Application1.dll
 C:\Users\James\Documents\Programming\Bots\First_Bot\First_Bot\obj\Debug\Bot Application1.pdb
+C:\git\HackDay\ReedBot\First_Bot\bin\Bot Application1.dll.config
+C:\git\HackDay\ReedBot\First_Bot\bin\Bot Application1.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\Bot Application1.pdb
+C:\git\HackDay\ReedBot\First_Bot\bin\Autofac.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\Chronic.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\Microsoft.Bot.Builder.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\Microsoft.Bot.Connector.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\Microsoft.IdentityModel.Protocol.Extensions.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\Microsoft.Rest.ClientRuntime.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\Microsoft.WindowsAzure.Configuration.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\Newtonsoft.Json.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\System.Net.Http.Formatting.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\System.Web.Http.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\System.Web.Http.WebHost.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\Autofac.xml
+C:\git\HackDay\ReedBot\First_Bot\bin\Microsoft.Bot.Builder.xml
+C:\git\HackDay\ReedBot\First_Bot\bin\Microsoft.Bot.Connector.xml
+C:\git\HackDay\ReedBot\First_Bot\bin\Microsoft.IdentityModel.Protocol.Extensions.pdb
+C:\git\HackDay\ReedBot\First_Bot\bin\Microsoft.IdentityModel.Protocol.Extensions.xml
+C:\git\HackDay\ReedBot\First_Bot\bin\Microsoft.Rest.ClientRuntime.xml
+C:\git\HackDay\ReedBot\First_Bot\bin\Microsoft.WindowsAzure.Configuration.xml
+C:\git\HackDay\ReedBot\First_Bot\bin\Newtonsoft.Json.xml
+C:\git\HackDay\ReedBot\First_Bot\bin\System.IdentityModel.Tokens.Jwt.pdb
+C:\git\HackDay\ReedBot\First_Bot\bin\System.IdentityModel.Tokens.Jwt.xml
+C:\git\HackDay\ReedBot\First_Bot\bin\System.Net.Http.Formatting.xml
+C:\git\HackDay\ReedBot\First_Bot\bin\System.Web.Http.xml
+C:\git\HackDay\ReedBot\First_Bot\bin\System.Web.Http.WebHost.xml
+C:\git\HackDay\ReedBot\First_Bot\bin\ar\Microsoft.Bot.Builder.resources.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\en\Microsoft.Bot.Builder.resources.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\es\Microsoft.Bot.Builder.resources.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\fa\Microsoft.Bot.Builder.resources.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\fr\Microsoft.Bot.Builder.resources.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\ja\Microsoft.Bot.Builder.resources.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\ru\Microsoft.Bot.Builder.resources.dll
+C:\git\HackDay\ReedBot\First_Bot\bin\zh-hans\Microsoft.Bot.Builder.resources.dll
+C:\git\HackDay\ReedBot\First_Bot\obj\Debug\First_Bot.csprojResolveAssemblyReference.cache
+C:\git\HackDay\ReedBot\First_Bot\obj\Debug\Bot Application1.dll
+C:\git\HackDay\ReedBot\First_Bot\obj\Debug\Bot Application1.pdb
