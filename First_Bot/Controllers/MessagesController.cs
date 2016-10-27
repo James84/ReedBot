@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.UI.WebControls;
 using First_Bot.Controllers.API;
 using Microsoft.Bot.Connector;
 
@@ -61,8 +62,14 @@ namespace First_Bot
 
                             reply.Attachments = new List<Attachment>
                             {
-                                CreateAttachment($"http://www.reed.co.uk/jobs?keywords={keywords}&location={location}", 
-                                                 "see my jobs", subTitle: $"We have {searchData.TotalResults} jobs for {keywords} jobs in {location}.")
+                                CardActionHelpers.BuildHeroCard(new List<CardAction>
+                                                                {
+                                                                    CardActionHelpers.BuildCardAction("openUrl", 
+                                                                                                      "see my jobs", 
+                                                                                                      $"http://www.reed.co.uk/jobs?keywords={keywords}&location={location}")
+                                                                }, 
+                                subTitle: $"We have {searchData.TotalResults} jobs for {keywords} jobs in {location}.")
+                                .ToAttachment()
                             };
                         }
                         else
@@ -70,9 +77,14 @@ namespace First_Bot
                             reply = incomingMessage.CreateReply("Either keywords or location are empty. Please try again.");
                         }
                     }
+                    else if (incomingMessage.Text.ToLowerInvariant() == "get started")
+                    {
+                        reply = incomingMessage.CreateReply("Hi, what job are you looking for?");
+                    }
                     else
                     {
-                        reply = incomingMessage.CreateReply("Hi, how can I help you?");
+                        reply = incomingMessage.CreateReply("I'm sorry I do not understand. What are you looking for?");
+
                     }
                 }
                 else
@@ -128,34 +140,6 @@ namespace First_Bot
                 conversationData);
         }
 
-        private static Attachment CreateAttachment(string buttonLink = "", string buttonTitle = "", string imageUrl = "", string subTitle = "")
-        {
-            var plCard = new HeroCard();
-
-            if (!string.IsNullOrEmpty(subTitle))
-                plCard.Subtitle = subTitle;
-
-            if (!string.IsNullOrEmpty(imageUrl))
-            {
-                plCard.Images = new List<CardImage> { new CardImage(imageUrl)};
-            }
-
-            if (!string.IsNullOrEmpty(buttonLink))
-            {
-                var plButton = new CardAction
-                {
-                    Value = buttonLink,
-                    Type = "openUrl",
-                    Title = buttonTitle
-                };
-                plCard.Buttons = new List<CardAction> {plButton};
-            }
-
-            var plAttachment = plCard.ToAttachment();
-
-            return plAttachment;
-        }
-
         private Activity HandleSystemMessage(Activity message)
         {
             if (message.Type == ActivityTypes.DeleteUserData)
@@ -165,8 +149,13 @@ namespace First_Bot
             }
             else if (message.Type == ActivityTypes.ConversationUpdate)
             {
-                var reply = message.CreateReply("Welcome to job bot, how can I help?");
-
+                var reply = message.CreateReply("");
+                reply.Attachments = new List<Attachment>
+                {
+                    CardActionHelpers.BuildHeroCard(new List<CardAction> { CardActionHelpers.BuildCardAction("imBack", "Get started", "Get started")},
+                                                    subTitle: "Welcome to job bot, how can I help?")
+                                    .ToAttachment()
+                };
                 return reply;
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
@@ -186,31 +175,3 @@ namespace First_Bot
         }
     } 
 }
-
-/*
- 
-                    if (incomingMessage.Text.ToLowerInvariant() == "hello" || incomingMessage.Text.ToLowerInvariant() == "hi")
-                    {
-
-                        reply =
-                            incomingMessage.CreateReply(
-                                $"<b>Hello {incomingMessage.From.Name}</b>, this is ReedBot. How can I help?");
-
-                        reply.TextFormat = "xml";
-                    }
-                    else if (incomingMessage.Text.ToLowerInvariant() == "search")
-                    {
-
-                        reply =
-                            incomingMessage.CreateReply("Let's search!");
-                        
-                        reply.Attachments = new List<Attachment>
-                        {
-                            CreateAttachment("http://www.reed.co.uk/jobs", "reed.co.uk", "http://www.reed.co.uk/resources/images/campaign-2015/header-logo.png")
-                        };
-                    }
-                    else
-                    {
-                        reply = incomingMessage.CreateReply("I'm sorry ReedBot does not understand. Please try again");
-                    }     
-*/

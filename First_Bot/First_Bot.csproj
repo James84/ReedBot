@@ -119,10 +119,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="CardActionHelpers.cs" />
     <Compile Include="Controllers\API\SearchDetailsDto.cs" />
     <Compile Include="Controllers\API\SearchResultsWrapper.cs" />
     <Compile Include="Controllers\API\Search.cs" />
+    <Compile Include="Controllers\MessagesDialogController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Dialogs\LookingForDialog.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
