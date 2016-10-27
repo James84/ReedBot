@@ -26,6 +26,27 @@ namespace First_Bot
             return heroCard;
         }
 
+        public static ThumbnailCard BuildTumbnailCard(IList<CardAction> buttons = null, IList<CardImage> images = null, string title = "", string subTitle = "")
+        {
+            var thumbnailCard = new ThumbnailCard
+            {
+                Title = title,
+                Subtitle = subTitle
+            };
+
+            if (buttons != null)
+            {
+                thumbnailCard.Buttons = new List<CardAction>(buttons);
+            }
+
+            if (images != null)
+            {
+                thumbnailCard.Images = new List<CardImage>(images);
+            }
+
+            return thumbnailCard;
+        }
+
         public static CardAction BuildCardAction(string type = null, string title = null, string value = null, string image = null)
         {
             return new CardAction

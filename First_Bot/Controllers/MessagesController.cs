@@ -79,7 +79,7 @@ namespace First_Bot
                     }
                     else if (incomingMessage.Text.ToLowerInvariant() == "get started")
                     {
-                        reply = incomingMessage.CreateReply("Hi, what job are you looking for?");
+                        reply = incomingMessage.CreateReply("What job are you looking for?");
                     }
                     else
                     {
@@ -152,9 +152,16 @@ namespace First_Bot
                 var reply = message.CreateReply("");
                 reply.Attachments = new List<Attachment>
                 {
-                    CardActionHelpers.BuildHeroCard(new List<CardAction> { CardActionHelpers.BuildCardAction("imBack", "Get started", "Get started")},
-                                                    subTitle: "Welcome to job bot, how can I help?")
-                                    .ToAttachment()
+                    CardActionHelpers.BuildTumbnailCard(new List<CardAction>
+                    {
+                        CardActionHelpers.BuildCardAction("imBack", "Get started", "Get started")
+                    },
+                    new List<CardImage>
+                    {
+                        CardActionHelpers.BuildCardImage("Jimmy Job Bot", url: "http://www.reed.co.uk//upload/images/jimmy_job_bot_blue.jpg")
+                    },
+                    subTitle: "Welcome to job bot, how can I help?")
+                    .ToAttachment()
                 };
                 return reply;
             }
