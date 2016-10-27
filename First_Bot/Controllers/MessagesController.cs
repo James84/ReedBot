@@ -28,13 +28,6 @@ namespace First_Bot
 
                 if (incomingMessage.Type == ActivityTypes.Message)
                 {
-                    //                    Bot: Welcome did you know (intro)
-                    //Bot: Hi how can i help you
-                    //Alex: I’m looking for < junior UX jobs >
-                    //Bot: Current Location ? Leeds ? (show map)
-//                    Alex: No, < London >
-//                    Bot: Show results
-
                     if (incomingMessage.Text.ToLowerInvariant().Contains("i'm looking for"))
                     {
                         var keywords = incomingMessage.Text.ToLowerInvariant().Replace("i'm looking for ", "").Replace("jobs", "").Trim();
@@ -83,7 +76,7 @@ namespace First_Bot
                     }
                     else
                     {
-                        reply = incomingMessage.CreateReply("I'm sorry I do not understand. What are you looking for?");
+                        reply = incomingMessage.CreateReply("I'm sorry I do not understand. What job are you looking for?");
 
                     }
                 }
