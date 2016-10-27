@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 using First_Bot.Controllers.API;
 using Microsoft.Bot.Connector;
+using Newtonsoft.Json;
 
 namespace First_Bot
 {
@@ -18,8 +21,8 @@ namespace First_Bot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity incomingMessage)
         {
-            //SearchResultsWrapper data = Search.GetJobs(incomingMessage.Text);
-            //Console.WriteLine(data);
+            SearchResultsWrapper data = Search.GetJobs(incomingMessage.Text);
+            Console.WriteLine(data);
 
             try
             {
@@ -27,7 +30,8 @@ namespace First_Bot
 
                 if (incomingMessage.Type == ActivityTypes.Message)
                 {
-                    //                    Bot: Welcome did you know (intro)
+<<<<<<< HEAD
+//                    Bot: Welcome did you know (intro)
                     //Bot: Hi how can i help you
                     //Alex: I’m looking for < junior UX jobs >
                     //Bot: Current Location ? Leeds ? (show map)
@@ -35,17 +39,20 @@ namespace First_Bot
 //                    Bot: Show results
 
                     if (incomingMessage.Text.ToLowerInvariant().Contains("i'm looking for"))
+=======
+
+                    if (incomingMessage.Text.ToLowerInvariant() == "hello" || incomingMessage.Text.ToLowerInvariant() == "hi")
+>>>>>>> e493d5b2839af68baf1a99ad7a7b9541d4ad95f1
                     {
                         var keywords = incomingMessage.Text.ToLowerInvariant().Replace("i'm looking for ", "").Replace("jobs", "").Trim();
 
                         await SetConversationData(incomingMessage, "keywords", keywords);
 
-                        reply = incomingMessage.CreateReply("Is your location Leeds?");
-                        await SetConversationData(incomingMessage, "location", "leeds");
+                        reply = incomingMessage.CreateReply("What location would you like to search in?");
                     }
-                    else if (incomingMessage.Text.ToLowerInvariant().Contains("no it's"))
+                    else if (incomingMessage.Text.ToLowerInvariant().Contains("my location is"))
                     {
-                        var location = incomingMessage.Text.ToLowerInvariant().Replace("no it's", "");
+                        var location = incomingMessage.Text.ToLowerInvariant().Replace("my location is", "");
 
                         await SetConversationData(incomingMessage, "location", location);
 
@@ -53,27 +60,13 @@ namespace First_Bot
 
                         var keywords = conversationData.GetProperty<string>("keywords");
 
-                        if (!string.IsNullOrEmpty(location) && !string.IsNullOrEmpty(keywords))
-                        {
-                            var searchData = Search.GetJobs(keywords, location);
-
-                            reply = incomingMessage.CreateReply();
-
-                            reply.Attachments = new List<Attachment>
-                            {
-                                CreateAttachment($"http://www.reed.co.uk/jobs?keywords={keywords}&location={location}", 
-                                                 "see my jobs", subTitle: $"We have {searchData.TotalResults} jobs for {keywords} jobs in {location}.")
-                            };
-                        }
-                        else
-                        {
-                            reply = incomingMessage.CreateReply("Either keywords or location are empty. Please try again.");
-                        }
+                        reply = incomingMessage.CreateReply($"Your keywords are {keywords} and your location is {location}");
                     }
                     else
                     {
                         reply = incomingMessage.CreateReply("Hi, how can I help you?");
                     }
+
                 }
                 else
                 {
@@ -103,6 +96,7 @@ namespace First_Bot
 
                 var response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
+                throw;
             }
         }
 
@@ -128,12 +122,9 @@ namespace First_Bot
                 conversationData);
         }
 
-        private static Attachment CreateAttachment(string buttonLink = "", string buttonTitle = "", string imageUrl = "", string subTitle = "")
+        private static Attachment CreateAttachment(string buttonLink = "", string buttonTitle = "", string imageUrl = "")
         {
             var plCard = new HeroCard();
-
-            if (!string.IsNullOrEmpty(subTitle))
-                plCard.Subtitle = subTitle;
 
             if (!string.IsNullOrEmpty(imageUrl))
             {

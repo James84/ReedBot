@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-using Microsoft.Rest;
 using Newtonsoft.Json;
 
 namespace First_Bot.Controllers.API
@@ -29,7 +25,7 @@ namespace First_Bot.Controllers.API
             var authData = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(formatApiKey));
             client.DefaultRequestHeaders.Authorization = authData;
 
-            Task<HttpResponseMessage> response = client.GetAsync("search?keywords=" + keywords + "&location=" + location);
+            Task<HttpResponseMessage> response = client.GetAsync("search?keywords=" + keywords + "&locationname=" + location);
             HttpResponseMessage result = response.Result;
 
             SearchResultsWrapper jobs = null;
