@@ -21,8 +21,8 @@ namespace First_Bot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity incomingMessage)
         {
-            SearchResultsWrapper data = Search.GetJobs(incomingMessage.Text);
-            Console.WriteLine(data);
+            //SearchResultsWrapper data = Search.GetJobs(incomingMessage.Text);
+            //Console.WriteLine(data);
 
             try
             {
@@ -56,7 +56,26 @@ namespace First_Bot
 
                         var keywords = conversationData.GetProperty<string>("keywords");
 
-                        reply = incomingMessage.CreateReply($"Your keywords are {keywords} and your location is {location}");
+                        if (!string.IsNullOrEmpty(location) && !string.IsNullOrEmpty(keywords))
+                        {
+                            var searchData = Search.GetJobs(keywords, location);
+
+                            reply =
+                                incomingMessage.CreateReply(
+                                    $"We have {searchData.TotalResults} jobs for {keywords} jobs in {location}.");
+
+                            reply.Attachments = new List<Attachment>
+                            {
+                                CreateAttachment($"http://www.reed.co.uk/jobs?keywords={keywords}&location={location}", "run search", "")
+                            };
+
+                        }
+                        else
+                        {
+                            reply =
+                                incomingMessage.CreateReply(
+                                    $"Either keywords or location are empty. Please try again.");
+                        }
                     }
                     else
                     {
