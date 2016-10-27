@@ -45,7 +45,7 @@ namespace First_Bot
                         
                         reply.Attachments = new List<Attachment>
                         {
-                            CreateAttachment("http://www.reed.co.uk/jobs", "http://www.reed.co.uk/resources/images/campaign-2015/header-logo.png")
+                            CreateAttachment("http://www.reed.co.uk/jobs", "reed.co.uk", "http://www.reed.co.uk/resources/images/campaign-2015/header-logo.png")
                         };
                     }
                     else
@@ -74,28 +74,25 @@ namespace First_Bot
             }
         }
 
-        private static Attachment CreateAttachment(string contentUrl, string imageUrl)
+        private static Attachment CreateAttachment(string buttonLink = "", string buttonTitle = "", string imageUrl = "")
         {
-            var cardButtons = new List<CardAction>();
+            var plCard = new HeroCard();
 
-            var cardImages = new List<CardImage> {new CardImage(imageUrl)};
-
-            var plButton = new CardAction
+            if (!string.IsNullOrEmpty(imageUrl))
             {
-                Value = contentUrl,
-                Type = "openUrl",
-                Title = "reed.co.uk"
-            };
+                plCard.Images = new List<CardImage> { new CardImage(imageUrl)};
+            }
 
-            cardButtons.Add(plButton);
-
-            var plCard = new HeroCard()
+            if (!string.IsNullOrEmpty(buttonLink))
             {
-                //Title = $"Click on the button to run a search",
-                Subtitle = "Click on the button to run a search",
-                Images = cardImages,
-                Buttons = cardButtons
-            };
+                var plButton = new CardAction
+                {
+                    Value = buttonLink,
+                    Type = "openUrl",
+                    Title = buttonTitle
+                };
+                plCard.Buttons = new List<CardAction> {plButton};
+            }
 
             var plAttachment = plCard.ToAttachment();
 
@@ -111,9 +108,13 @@ namespace First_Bot
             }
             else if (message.Type == ActivityTypes.ConversationUpdate)
             {
-                // Handle conversation state changes, like members being added and removed
-                // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
-                // Not available in all channels
+                var reply = message.CreateReply("Hello welcome to reed.co.uk. How can we help?");
+                reply.Attachments = new List<Attachment>
+                {
+                    CreateAttachment(buttonLink: "http://www.reed.co.uk/jobs", buttonTitle: "Search", imageUrl: "")
+                };
+
+                return reply;
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {
